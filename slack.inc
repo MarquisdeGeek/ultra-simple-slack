@@ -70,6 +70,11 @@ public $emoji;
 		return $this;
 	}
 
+	public function setUserID($id) {
+		$this->userid = $id;
+		return $this;
+	}
+
 	public function setEmoji($emoji) {
 		$this->emoji = $emoji;
 		return $this;
@@ -88,7 +93,10 @@ class SlackConduitIn {
 
 	public function onReceive($data) {
 		if ($this->token == $data['token']) {
-			return new SlackMessage($data);
+			$msg = new SlackMessage($data);
+			$msg->setUsername($data['user_name']);
+			$msg->setUserID($data['user_id']);
+			return $msg;
 		}
 		return NULL;
 	}
